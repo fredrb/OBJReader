@@ -35,6 +35,7 @@ bin/CMakeFiles/run.dir/main.cpp.o: ../src/GL/Context.h
 bin/CMakeFiles/run.dir/main.cpp.o: ../src/GL/ShaderProgram.h
 bin/CMakeFiles/run.dir/main.cpp.o: ../src/GL/Window.h
 bin/CMakeFiles/run.dir/main.cpp.o: ../src/Program/DrawProgram.h
+bin/CMakeFiles/run.dir/main.cpp.o: ../src/Program/StaticCube.h
 bin/CMakeFiles/run.dir/main.cpp.o: ../src/Program/StaticTriangleIndexes.h
 bin/CMakeFiles/run.dir/main.cpp.o: ../src/main.cpp
 

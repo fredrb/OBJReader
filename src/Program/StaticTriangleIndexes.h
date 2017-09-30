@@ -7,7 +7,7 @@ class StaticTriangleIndexes : public DrawProgram {
 private:
 	unsigned int VAO;
 	std::vector<float> vertices;
-	std::vector<float> indexes;
+	std::vector<unsigned int> indexes;
 	Context* context;
 	glm::mat4 view, model, projection;
 public:

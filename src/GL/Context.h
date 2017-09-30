@@ -29,7 +29,7 @@ public:
 
 	void bindVertices(unsigned int VAO, const std::vector<float> &vertices) const;
 
-	void bindIndexes(unsigned int VAO, const std::vector<float> &indexes);
+	void bindIndexes(unsigned int VAO, const std::vector<unsigned int> &indexes);
 
 	void drawVAO(unsigned int VAO, unsigned int verticesCount) const;
 

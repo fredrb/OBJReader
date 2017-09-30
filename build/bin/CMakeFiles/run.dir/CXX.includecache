@@ -95,4 +95,6 @@ Program/DrawProgram.h
 /home/fredrb/code/c++/OBJReader/src/Program/DrawProgram.h
 Program/StaticTriangleIndexes.h
 /home/fredrb/code/c++/OBJReader/src/Program/StaticTriangleIndexes.h
+Program/StaticCube.h
+/home/fredrb/code/c++/OBJReader/src/Program/StaticCube.h
 

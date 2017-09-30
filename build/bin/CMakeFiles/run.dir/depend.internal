@@ -36,5 +36,6 @@ bin/CMakeFiles/run.dir/main.cpp.o
  /home/fredrb/code/c++/OBJReader/src/GL/ShaderProgram.h
  /home/fredrb/code/c++/OBJReader/src/GL/Window.h
  /home/fredrb/code/c++/OBJReader/src/Program/DrawProgram.h
+ /home/fredrb/code/c++/OBJReader/src/Program/StaticCube.h
  /home/fredrb/code/c++/OBJReader/src/Program/StaticTriangleIndexes.h
  /home/fredrb/code/c++/OBJReader/src/main.cpp

@@ -48,14 +48,19 @@ unsigned int Context::createVAO() const {
 }
 
 
-void Context::bindIndexes(unsigned int VAO, const std::vector<float> &indexes) {
+void Context::bindIndexes(unsigned int VAO, const std::vector<unsigned int> &indexes) {
+#if LOG_INFO
+	for (auto it = indexes.begin(); it != indexes.end(); ++it)
+		std::cout << "i: " << (*it) << std::endl;
+#endif
+
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(float), &indexes.front(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), &indexes.front(), GL_STATIC_DRAW);
 
 	this->index_based = true;
 
@@ -63,6 +68,11 @@ void Context::bindIndexes(unsigned int VAO, const std::vector<float> &indexes) {
 };
 
 void Context::bindVertices(unsigned int VAO, const std::vector<float> &vertices) const {
+#if LOG_INFO
+	for (auto it = vertices.begin(); it != vertices.end(); ++it)
+		std::cout << "v: " << (*it) << std::endl;
+#endif
+
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
 
@@ -96,18 +106,12 @@ void Context::drawVAO(unsigned int VAO, unsigned int verticesCount) const {
 
 	this->shader_program->setUniformMat4("view", view);
 	this->shader_program->setUniformMat4("projection", projection);
+	this->shader_program->setUniformMat4("model", model);
 
 	glBindVertexArray(VAO);
 
-	glm::mat4 _model;
-	_model = glm::translate(_model, glm::vec3(0.0f, 0.0f, 0.0f));
-	_model = glm::rotate(model, 1 * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 2.7f));
-	this->shader_program->setUniformMat4("model", _model);
+	std::cout << verticesCount << std::endl;
+	glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
 
-	if (this->index_based) {
-		glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
-	} else {
-		glDrawArrays(GL_TRIANGLES, 0, verticesCount);
-	}
 }
 
