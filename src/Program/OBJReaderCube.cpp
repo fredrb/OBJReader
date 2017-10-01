@@ -43,9 +43,15 @@ void OBJReaderCube::on_frame(const float timestamp) {
 	std::cout << "DRAWING " << this->indexes.size() << " INDEXES" << std::endl;
 #endif
 
+/*
 	glm::mat4 _model;
 	_model = glm::rotate(_model, (float)timestamp * glm::radians(-155.0f), glm::vec3(0.0f, 0.5f, 0.0f));
 	model = _model;
+*/
+
+	glm::mat4 _view;
+	camera.apply_view(timestamp, _view);
+	view = _view;
 
 	this->context->setViewMatrix4(view);
 	this->context->setModelMatrix4(model);
@@ -53,4 +59,27 @@ void OBJReaderCube::on_frame(const float timestamp) {
 
 
 	this->context->drawVAO(this->VAO, this->indexes.size());
+};
+
+void OBJReaderCube::on_key_pressed(const KEY key) {
+#if LOG_WARN
+	std::cout << "Key pressed: " << key << std::endl;
+#endif
+
+	switch(key) {
+		case KEY::DOWN:
+			camera.move_down();
+		break;
+		case KEY::UP:
+			camera.move_up();
+		break;
+		case KEY::LEFT:
+			camera.move_left();
+		break;
+		case KEY::RIGHT:
+			camera.move_right();
+		break;
+		default:
+		break;
+	}
 };

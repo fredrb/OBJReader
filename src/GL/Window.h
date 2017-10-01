@@ -13,6 +13,7 @@ private:
 	GLFWwindow* window;
 	float last_refresh;
 	DrawProgram *draw_program;
+	void process_input();
 public:
 	Window(unsigned int w, unsigned int h) : width(w), height(h) {};
 	void attach_program(DrawProgram* p);

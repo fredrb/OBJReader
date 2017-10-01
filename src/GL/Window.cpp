@@ -7,6 +7,17 @@ void Window::attach_program(DrawProgram* p) {
 	this->draw_program = p;
 }
 
+void Window::process_input() {
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
+		this->draw_program->on_key_pressed(KEY::UP);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) 
+		this->draw_program->on_key_pressed(KEY::LEFT);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) 
+		this->draw_program->on_key_pressed(KEY::DOWN);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) 
+		this->draw_program->on_key_pressed(KEY::RIGHT);
+}
+
 void Window::run_program() {
 	if (!glfwInit()) {
 		std::cout << "Failed to initialize GLFW" << std::endl;
@@ -39,6 +50,7 @@ void Window::run_program() {
 #if LOG_TRACE
 			std::cout << "CURRENT TIME: "<< t << " - Last refresh at: " << this->last_refresh << " - Refresh rate: " << REFRESH_RATE << std::endl;
 #endif
+			this->process_input();
 			this->draw_program->on_frame(glfwGetTime());
 			glfwSwapBuffers(window);
 			glfwPollEvents();
