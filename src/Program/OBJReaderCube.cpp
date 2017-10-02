@@ -17,22 +17,8 @@ void OBJReaderCube::init_draw_program(Context* c) {
 
 	this->context->attachShader(fragmentSource.c_str(), SHADER_TYPE::Fragment);
 
-	OBJReader objReader("../assets/model/cube.obj");
-	t_obj_data data = objReader.get_obj_data();
-
-	this->vertices = std::vector<float>();
-	for (auto d : data.vertices) {
-		this->vertices.push_back(d.x);
-		this->vertices.push_back(d.y);
-		this->vertices.push_back(d.z);
-	}
-
-	this->indexes = std::vector<unsigned int>();
-	for (auto d : data.faces) {
-		this->indexes.push_back(d.x_position - 1);
-		this->indexes.push_back(d.y_position - 1);
-		this->indexes.push_back(d.z_position - 1);
-	}
+	obj.prepare_data();
+	this->context->attachObject(&obj);
 
 	model				= glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	view				= glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -43,22 +29,12 @@ void OBJReaderCube::init_draw_program(Context* c) {
 	this->context->setProjectionMatrix4(projection);
 
 	this->context->initialize_context();
-
-	this->VAO = this->context->createVAO();
-	this->context->bindVertices(this->VAO, this->vertices);
-	this->context->bindIndexes(this->VAO, this->indexes);
 };
 
 void OBJReaderCube::on_frame(const float timestamp) {
 #if LOG_TRACE
 	std::cout << "DRAWING " << this->indexes.size() << " INDEXES" << std::endl;
 #endif
-
-/*
-	glm::mat4 _model;
-	_model = glm::rotate(_model, (float)timestamp * glm::radians(-155.0f), glm::vec3(0.0f, 0.5f, 0.0f));
-	model = _model;
-*/
 
 	glm::mat4 _view;
 	camera.apply_view(timestamp, _view);
@@ -68,8 +44,7 @@ void OBJReaderCube::on_frame(const float timestamp) {
 	this->context->setModelMatrix4(model);
 	this->context->setProjectionMatrix4(projection);
 
-
-	this->context->drawVAO(this->VAO, this->indexes.size());
+	this->context->render();
 };
 
 void OBJReaderCube::on_mouse_moved(double xpos, double ypos) {

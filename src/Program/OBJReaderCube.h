@@ -3,6 +3,7 @@
 
 #include "DrawProgram.h"
 #include "../Camera.h"
+#include "../GL/RenderObject.h"
 
 class OBJReaderCube : public DrawProgram {
 private:
@@ -12,8 +13,9 @@ private:
 	Context* context;
 	glm::mat4 view, model, projection;
 	Camera camera;
+	RenderObject obj;
 public:
-	OBJReaderCube() {};
+	OBJReaderCube() : obj(RenderObject("../assets/model/cube.obj")) {};
 
 	void init_draw_program (Context* c) override;
 

@@ -12,8 +12,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG=1 -DLOG_TRACE=${D_LOG_TRACE} -DLOG_WAR
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(MAIN_SOURCES main.cpp File/FileReader.cpp File/OBJReader.cpp
-									GL/Context.cpp GL/ShaderProgram.cpp GL/Window.cpp
-									Program/StaticCube.cpp Program/StaticTriangleIndexes.cpp Program/OBJReaderCube
+									GL/Context.cpp GL/ShaderProgram.cpp GL/Window.cpp GL/RenderObject.cpp
+									Program/OBJReaderCube.cpp
 									Camera.cpp)
 
 set(MAIN_EXE_NAME run)

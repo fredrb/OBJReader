@@ -13,7 +13,6 @@ Context::Context(unsigned int w, unsigned int h) : width(w), height(h) {
 	}
 
 	this->shader_program = new ShaderProgram();
-
 	glEnable(GL_DEPTH_TEST);
 
 };
@@ -41,65 +40,7 @@ void Context::initialize_context() {
 	this->shader_program->setUniformMat4("projection", projection);
 };
 
-unsigned int Context::createVAO() const {
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	return VAO;
-}
-
-
-void Context::bindIndexes(unsigned int VAO, const std::vector<unsigned int> &indexes) {
-#if LOG_INFO
-	for (auto it = indexes.begin(); it != indexes.end(); ++it)
-		std::cout << "i: " << (*it) << std::endl;
-#endif
-
-	unsigned int EBO;
-	glGenBuffers(1, &EBO);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), &indexes.front(), GL_STATIC_DRAW);
-
-	this->index_based = true;
-
-	glBindVertexArray(0);
-};
-
-void Context::bindVertices(unsigned int VAO, const std::vector<float> &vertices) const {
-#if LOG_INFO
-	for (auto it = vertices.begin(); it != vertices.end(); ++it)
-		std::cout << "v: " << (*it) << " ";
-	std::cout << std::endl;
-#endif
-
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-
-	glBindVertexArray(VAO);
-#if LOG_TRACE
-	std::cout << "GENERATING BUFFER " << VBO << std::endl << "BOUND VAO: " << VAO << std::endl;
-#endif
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	// glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-
-#if LOG_TRACE
-	std::cout << "BINDING COMPLETE" << std::endl;
-#endif
-
-}
-
-void Context::drawVAO(unsigned int VAO, unsigned int verticesCount) const {
+void Context::render() const {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -109,10 +50,10 @@ void Context::drawVAO(unsigned int VAO, unsigned int verticesCount) const {
 	this->shader_program->setUniformMat4("projection", projection);
 	this->shader_program->setUniformMat4("model", model);
 
-	glBindVertexArray(VAO);
+	this->obj->draw();
+}
 
-	std::cout << verticesCount << std::endl;
-	glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
-
+void Context::attachObject(const RenderObject* obj) {
+	this->obj = obj;
 }
 

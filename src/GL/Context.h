@@ -2,6 +2,7 @@
 #define CONTEXT_H
 
 #include "ShaderProgram.h"
+#include "RenderObject.h"
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -16,6 +17,8 @@ private:
 	glm::mat4 projection;
 
 	bool index_based = false;
+
+	const RenderObject* obj;
 public:
 	unsigned int width, height;
 
@@ -25,13 +28,7 @@ public:
 
 	void initialize_context();
 
-	unsigned int createVAO() const;
-
-	void bindVertices(unsigned int VAO, const std::vector<float> &vertices) const;
-
-	void bindIndexes(unsigned int VAO, const std::vector<unsigned int> &indexes);
-
-	void drawVAO(unsigned int VAO, unsigned int verticesCount) const;
+	void render() const;
 
 	void attachShader(const char* source, SHADER_TYPE type) const;
 
@@ -40,6 +37,8 @@ public:
 	void setViewMatrix4(glm::mat4 m);
 
 	void setProjectionMatrix4(glm::mat4 m);
+
+	void attachObject(const RenderObject* obj);
 
 };
 
