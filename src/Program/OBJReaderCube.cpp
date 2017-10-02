@@ -69,6 +69,8 @@ void OBJReaderCube::on_key_pressed(const KEY key) {
 		case KEY::RIGHT:
 			camera.move_right();
 		break;
+		case KEY::QUIT:
+			this->context->quit = true;
 		default:
 		break;
 	}

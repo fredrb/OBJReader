@@ -19,8 +19,11 @@ private:
 	bool index_based = false;
 
 	const RenderObject* obj;
+
 public:
 	unsigned int width, height;
+
+	bool quit = false;
 
 	Context(unsigned int w, unsigned int h);
 
@@ -39,7 +42,6 @@ public:
 	void setProjectionMatrix4(glm::mat4 m);
 
 	void attachObject(const RenderObject* obj);
-
 };
 
 #endif

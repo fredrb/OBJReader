@@ -14,6 +14,8 @@ void OBJReader::process_vertex(const std::string line, t_obj_data &data) {
 	t_vector v;
 	stream >> v.x >> v.y >> v.z;
 
+	std::cout << "Vertices read : " << v.x << " " << v.y << " " << v.z << std::endl;
+
 	data.vertices.push_back(v);
 }
 
@@ -24,6 +26,7 @@ void OBJReader::process_face(const std::string line, t_obj_data &data) {
 
 	t_face f;
 	stream >> f.x_position >> f.y_position >> f.z_position;
+	std::cout << "Faces read : " << f.x_position << " " << f.y_position << " " << f.z_position << std::endl;
 
 	data.faces.push_back(f);
 }

@@ -22,6 +22,8 @@ void Window::process_input() {
 		GLOBAL_PROGRAM->on_key_pressed(KEY::DOWN);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		GLOBAL_PROGRAM->on_key_pressed(KEY::RIGHT);
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::QUIT);
 }
 
 void Window::run_program() {
@@ -41,6 +43,7 @@ void Window::run_program() {
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (GLOBAL_PROGRAM == NULL) {
 		std::cout << "Failed to initialize window without a valid program" << std::endl;
@@ -51,7 +54,7 @@ void Window::run_program() {
 	GLOBAL_PROGRAM->init_draw_program(&context);
 	glfwSetCursorPosCallback(this->window, this->process_mouse_callback);
 
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window) && !context.quit) {
 		float t = glfwGetTime() * 1000;
 		if (t - this->last_refresh > REFRESH_RATE) {
 #if LOG_TRACE
@@ -65,5 +68,5 @@ void Window::run_program() {
 		}
 	}
 
-
+	glfwTerminate();
 }
