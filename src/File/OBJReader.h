@@ -13,8 +13,8 @@ typedef struct {
 } t_vector_normal;
 
 typedef struct {
-	unsigned int x_position, y_position, z_position;
-	unsigned int x_normal, y_normal, z_normal;
+	unsigned int point_a, point_b, point_c;
+	unsigned int a_normal_index, b_normal_index, c_normal_index;
 } t_face;
 
 typedef struct {
@@ -33,6 +33,8 @@ private:
 	void process_vertex(const std::string line, t_obj_data &data);
 
 	void process_face(const std::string line, t_obj_data &data);
+
+	void process_natural(const std::string line, t_obj_data &data);
 
 public:
 	OBJReader(std::string path) : path(path) {};
