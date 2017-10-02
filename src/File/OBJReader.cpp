@@ -3,33 +3,29 @@
 #include <sstream>
 
 void OBJReader::process_comment(const std::string line, t_obj_data &data) {
-	
+
 }
 
 void OBJReader::process_vertex(const std::string line, t_obj_data &data) {
-	std::stringstream stream(line);	
+	std::stringstream stream(line);
 	std::string prefix;
 	std::getline(stream, prefix, ' ');
 
-	float v1, v2, v3;
-	stream >> v1 >> v2 >> v3;
-	
-	data.vertices.push_back(v1);
-	data.vertices.push_back(v2);
-	data.vertices.push_back(v3);
+	t_vector v;
+	stream >> v.x >> v.y >> v.z;
+
+	data.vertices.push_back(v);
 }
 
 void OBJReader::process_face(const std::string line, t_obj_data &data) {
-	std::stringstream stream(line);	
+	std::stringstream stream(line);
 	std::string prefix;
 	std::getline(stream, prefix, ' ');
 
-	unsigned int v1, v2, v3;
-	stream >> v1 >> v2 >> v3;
-	
-	data.faces.push_back(v1);
-	data.faces.push_back(v2);
-	data.faces.push_back(v3);
+	t_face f;
+	stream >> f.x_position >> f.y_position >> f.z_position;
+
+	data.faces.push_back(f);
 }
 
 t_obj_data OBJReader::get_obj_data() {
@@ -38,12 +34,12 @@ t_obj_data OBJReader::get_obj_data() {
 
 	if (!file.is_open()) {
 		std::cout << "Failed to open .OBJ file" << std::endl;
-	}	
+	}
 
 	std::string line;
 	t_obj_data obj;
 	while (std::getline(file, line)) {
-		if (line.empty()) 
+		if (line.empty())
 			continue;
 
 		if (line.at(0) == '#') {

@@ -3,19 +3,25 @@
 
 #include <iostream>
 
+DrawProgram* GLOBAL_PROGRAM;
+
 void Window::attach_program(DrawProgram* p) {
-	this->draw_program = p;
+	GLOBAL_PROGRAM = p;
+}
+
+void Window::process_mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	GLOBAL_PROGRAM->on_mouse_moved(xpos, ypos);
 }
 
 void Window::process_input() {
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
-		this->draw_program->on_key_pressed(KEY::UP);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) 
-		this->draw_program->on_key_pressed(KEY::LEFT);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) 
-		this->draw_program->on_key_pressed(KEY::DOWN);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) 
-		this->draw_program->on_key_pressed(KEY::RIGHT);
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::UP);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::LEFT);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::DOWN);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::RIGHT);
 }
 
 void Window::run_program() {
@@ -36,13 +42,14 @@ void Window::run_program() {
 
 	glfwMakeContextCurrent(window);
 
-	if (this->draw_program == NULL) {
+	if (GLOBAL_PROGRAM == NULL) {
 		std::cout << "Failed to initialize window without a valid program" << std::endl;
 		throw 1;
 	};
 
 	Context context(this->width, this->height);
-	this->draw_program->init_draw_program(&context);
+	GLOBAL_PROGRAM->init_draw_program(&context);
+	glfwSetCursorPosCallback(this->window, this->process_mouse_callback);
 
 	while (!glfwWindowShouldClose(window)) {
 		float t = glfwGetTime() * 1000;
@@ -51,7 +58,7 @@ void Window::run_program() {
 			std::cout << "CURRENT TIME: "<< t << " - Last refresh at: " << this->last_refresh << " - Refresh rate: " << REFRESH_RATE << std::endl;
 #endif
 			this->process_input();
-			this->draw_program->on_frame(glfwGetTime());
+			GLOBAL_PROGRAM->on_frame(glfwGetTime());
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 			this->last_refresh = glfwGetTime() * 1000;

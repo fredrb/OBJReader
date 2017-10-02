@@ -17,6 +17,10 @@ public:
 
 	void on_frame (const float timestamp) override;
 
+	void on_key_pressed(const KEY key) override {  };
+
+	void on_mouse_moved(double x, double y) override {  };
+
 };
 
 #endif

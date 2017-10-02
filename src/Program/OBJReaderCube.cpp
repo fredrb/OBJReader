@@ -20,12 +20,23 @@ void OBJReaderCube::init_draw_program(Context* c) {
 	OBJReader objReader("../assets/model/cube.obj");
 	t_obj_data data = objReader.get_obj_data();
 
-	this->vertices = data.vertices;
-	this->indexes = data.faces;
+	this->vertices = std::vector<float>();
+	for (auto d : data.vertices) {
+		this->vertices.push_back(d.x);
+		this->vertices.push_back(d.y);
+		this->vertices.push_back(d.z);
+	}
+
+	this->indexes = std::vector<unsigned int>();
+	for (auto d : data.faces) {
+		this->indexes.push_back(d.x_position - 1);
+		this->indexes.push_back(d.y_position - 1);
+		this->indexes.push_back(d.z_position - 1);
+	}
 
 	model				= glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	view				= glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	projection	= glm::perspective(glm::radians(30.0f), (float)this->context->width / (float)this->context->height, 0.1f, 100.0f);
+	projection	= glm::perspective(glm::radians(this->camera.fov), (float)this->context->width / (float)this->context->height, 0.1f, 100.0f);
 
 	this->context->setViewMatrix4(view);
 	this->context->setModelMatrix4(model);
@@ -60,6 +71,10 @@ void OBJReaderCube::on_frame(const float timestamp) {
 
 	this->context->drawVAO(this->VAO, this->indexes.size());
 };
+
+void OBJReaderCube::on_mouse_moved(double xpos, double ypos) {
+	camera.move_mouse(xpos, ypos);
+}
 
 void OBJReaderCube::on_key_pressed(const KEY key) {
 #if LOG_WARN

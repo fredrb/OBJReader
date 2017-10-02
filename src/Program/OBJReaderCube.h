@@ -21,6 +21,8 @@ public:
 
 	void on_key_pressed(const KEY key) override;
 
+	void on_mouse_moved(double, double) override;
+
 };
 
 #endif

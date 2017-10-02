@@ -70,7 +70,8 @@ void Context::bindIndexes(unsigned int VAO, const std::vector<unsigned int> &ind
 void Context::bindVertices(unsigned int VAO, const std::vector<float> &vertices) const {
 #if LOG_INFO
 	for (auto it = vertices.begin(); it != vertices.end(); ++it)
-		std::cout << "v: " << (*it) << std::endl;
+		std::cout << "v: " << (*it) << " ";
+	std::cout << std::endl;
 #endif
 
 	unsigned int VBO;
