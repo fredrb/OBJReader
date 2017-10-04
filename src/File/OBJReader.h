@@ -13,8 +13,8 @@ typedef struct {
 } t_vector_normal;
 
 typedef struct {
-	unsigned int point_a, point_b, point_c;
-	unsigned int a_normal_index, b_normal_index, c_normal_index;
+	unsigned int point_index;
+	unsigned int normal_index;
 } t_face;
 
 typedef struct {

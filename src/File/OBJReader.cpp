@@ -34,13 +34,23 @@ void OBJReader::process_vertex(const std::string line, t_obj_data &data) {
 
 void OBJReader::process_face(const std::string line, t_obj_data &data) {
 	std::stringstream stream(line);
-	std::string prefix;
-	std::getline(stream, prefix, ' ');
+	std::string chunk;
+	std::getline(stream, chunk, ' ');
 
-	t_face f;
-	stream >> f.point_a >> f.point_b >> f.point_c;
-
-	data.faces.push_back(f);
+	while (std::getline(stream, chunk, ' ')) {
+		if (chunk.empty())
+			continue;
+		t_face f;
+		std::istringstream ss(chunk);
+		std::string num;
+		std::getline(ss, num, '/');
+		f.point_index = stoi(num);
+		std::getline(ss, num, '/');
+		std::getline(ss, num);
+		f.normal_index = stoi(num);
+		std::cout << "Point: " << f.point_index << " Normal: " << f.normal_index << std::endl;
+		data.faces.push_back(f);
+	}
 }
 
 t_obj_data OBJReader::get_obj_data() {

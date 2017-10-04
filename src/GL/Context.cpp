@@ -41,7 +41,7 @@ void Context::initialize_context() {
 };
 
 void Context::render() const {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.01f, 0.01f, 0.02f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	this->shader_program->use_program();
@@ -50,10 +50,12 @@ void Context::render() const {
 	this->shader_program->setUniformMat4("projection", projection);
 	this->shader_program->setUniformMat4("model", model);
 
-	this->obj->draw();
+	for (auto obj : this->scene_graph) {
+		obj->draw();
+	}
 }
 
 void Context::attachObject(const RenderObject* obj) {
-	this->obj = obj;
+	this->scene_graph.push_back(obj);
 }
 

@@ -18,7 +18,7 @@ private:
 
 	bool index_based = false;
 
-	const RenderObject* obj;
+	std::vector<const RenderObject*> scene_graph;
 
 public:
 	unsigned int width, height;

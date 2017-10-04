@@ -15,7 +15,7 @@ private:
 	Camera camera;
 	RenderObject obj;
 public:
-	OBJReaderCube() : obj(RenderObject("../assets/model/cube_original.obj")) {};
+	OBJReaderCube() : obj(RenderObject("../assets/model/cube_vn.obj")) {};
 
 	void init_draw_program (Context* c) override;
 
