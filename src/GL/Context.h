@@ -1,8 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#include "ShaderProgram.h"
-#include "RenderObject.h"
+#include "Object/RenderObject.h"
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -11,7 +10,6 @@
 
 class Context {
 private:
-	ShaderProgram* shader_program;
 	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
@@ -27,19 +25,11 @@ public:
 
 	Context(unsigned int w, unsigned int h);
 
-	~Context() { delete this->shader_program; };
+	~Context() {};
 
 	void initialize_context();
 
 	void render() const;
-
-	void attachShader(const char* source, SHADER_TYPE type) const;
-
-	void setModelMatrix4(glm::mat4 m);
-
-	void setViewMatrix4(glm::mat4 m);
-
-	void setProjectionMatrix4(glm::mat4 m);
 
 	void attachObject(const RenderObject* obj);
 };

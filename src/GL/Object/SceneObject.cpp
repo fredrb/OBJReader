@@ -1,11 +1,12 @@
-#include "RenderObject.h"
+#include "SceneObject.h"
 
-RenderObject::RenderObject(std::string path) {
+SceneObject::SceneObject(std::string path) {
 	OBJReader reader(path);
 	raw_data = reader.get_obj_data();
+	this->shader_program = new ShaderProgram();
 }
 
-void RenderObject::prepare_data() {
+void SceneObject::prepare_data() {
 	glGenVertexArrays(1, &this->VAO);
 
 	unsigned int VBO;
@@ -43,12 +44,29 @@ void RenderObject::prepare_data() {
 #endif
 
 	glBindVertexArray(0);
+
+	this->shader_program->link_program();
 }
 
-void RenderObject::draw() const {
+void SceneObject::draw() const {
 	glBindVertexArray(VAO);
+	this->shader_program->use_program();
 	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size() / 6);
 }
 
+void SceneObject::attach_shader(std::string source, SHADER_TYPE type) const {
+	shader_program->load_shader_file(source.c_str(), type);
+}
 
+void SceneObject::setModelMatrix4(glm::mat4 m) const {
+	shader_program->setUniformMat4("model", m);
+}
+
+void SceneObject::setViewMatrix4(glm::mat4 m) const {
+	shader_program->setUniformMat4("view", m);
+}
+
+void SceneObject::setProjectionMatrix4(glm::mat4 m) const {
+	shader_program->setUniformMat4("projection", m);
+}
 
