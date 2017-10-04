@@ -59,14 +59,26 @@ void SceneObject::attach_shader(std::string source, SHADER_TYPE type) const {
 }
 
 void SceneObject::setModelMatrix4(glm::mat4 m) const {
+	this->shader_program->use_program();
 	shader_program->setUniformMat4("model", m);
 }
 
 void SceneObject::setViewMatrix4(glm::mat4 m) const {
+	this->shader_program->use_program();
 	shader_program->setUniformMat4("view", m);
 }
 
 void SceneObject::setProjectionMatrix4(glm::mat4 m) const {
+	this->shader_program->use_program();
 	shader_program->setUniformMat4("projection", m);
 }
 
+void SceneObject::setUniformMatrix4(const char* name, glm::mat4 m) const {
+	this->shader_program->use_program();
+	shader_program->setUniformMat4(name, m);
+};
+
+void SceneObject::setUniformVec3(const char* name, glm::vec3 v) const {
+	this->shader_program->use_program();
+	shader_program->setUniformVec3(name, v);
+};

@@ -34,6 +34,8 @@ public:
 	void attach_error_callback(t_error_callback fn);
 
 	void setUniformMat4(const char* name, const glm::mat4 &mat) const;
+
+	void setUniformVec3(const char* name, const glm::vec3 &vec) const;
 };
 
 #endif

@@ -11,9 +11,11 @@ private:
 	std::vector<float> vertices;
 	std::vector<unsigned int> indexes;
 	Context* context;
-	glm::mat4 view, model, projection;
+	glm::mat4 view, obj_model, light_model, projection;
 	Camera camera;
+
 	SceneObject *obj;
+	SceneObject *light;
 public:
 	void init_draw_program (Context* c) override;
 

@@ -28,6 +28,10 @@ public:
 
 	void setProjectionMatrix4(glm::mat4 m) const override;
 
+	void setUniformMatrix4(const char* name, glm::mat4 m) const;
+
+	void setUniformVec3(const char* name, glm::vec3 v) const;
+
 };
 
 #endif

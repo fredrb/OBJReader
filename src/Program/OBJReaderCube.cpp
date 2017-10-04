@@ -20,16 +20,20 @@ void OBJReaderCube::init_draw_program(Context* c) {
 	this->obj->attach_shader(fragmentSource, SHADER_TYPE::Fragment);
 
 	this->obj->prepare_data();
+
 	this->context->attachObject(obj);
 
-	model			  = glm::translate(model, glm::vec3(0.5f, 0.5f, -3.0f));
-	model				= glm::scale(model, glm::vec3(0.5f));
+	obj_model	  = glm::translate(obj_model, glm::vec3(0.5f, 0.5f, -3.0f));
 	view				= glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	projection	= glm::perspective(glm::radians(this->camera.fov), (float)this->context->width / (float)this->context->height, 0.1f, 100.0f);
 
 	this->obj->setViewMatrix4(view);
-	this->obj->setModelMatrix4(model);
+	this->obj->setModelMatrix4(obj_model);
 	this->obj->setProjectionMatrix4(projection);
+
+	this->obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));
+	this->obj->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	this->obj->setUniformVec3("lightPos", glm::vec3(1.2f, 1.0f, 2.0f));
 
 	this->context->initialize_context();
 };
@@ -44,8 +48,8 @@ void OBJReaderCube::on_frame(const float timestamp) {
 	view = _view;
 
 	this->obj->setViewMatrix4(view);
-	this->obj->setModelMatrix4(model);
 	this->obj->setProjectionMatrix4(projection);
+	this->obj->setModelMatrix4(obj_model);
 
 	this->context->render();
 };
