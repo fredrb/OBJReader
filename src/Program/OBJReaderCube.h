@@ -14,8 +14,15 @@ private:
 	glm::mat4 view, obj_model, light_model, projection;
 	Camera camera;
 
+	glm::vec3 obj_position = glm::vec3(0.5f, 0.5f, -3.0f);
+
 	SceneObject *obj;
 	SceneObject *light;
+
+	void toggle_scale();
+
+	bool big_scale = false;
+
 public:
 	void init_draw_program (Context* c) override;
 

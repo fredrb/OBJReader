@@ -8,7 +8,8 @@ enum KEY {
 	DOWN,
 	LEFT,
 	RIGHT,
-	QUIT
+	QUIT,
+	SCALE
 };
 
 class DrawProgram {
