@@ -26,6 +26,8 @@ void Window::process_input() {
 		GLOBAL_PROGRAM->on_key_pressed(KEY::QUIT);
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		GLOBAL_PROGRAM->on_key_pressed(KEY::SCALE);
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		GLOBAL_PROGRAM->on_key_pressed(KEY::ROTATE);
 }
 
 void Window::run_program() {

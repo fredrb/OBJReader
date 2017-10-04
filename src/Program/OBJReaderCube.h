@@ -21,6 +21,8 @@ private:
 
 	void toggle_scale();
 
+	void rotate();
+
 	bool big_scale = false;
 
 public:
@@ -31,6 +33,8 @@ public:
 	void on_key_pressed(const KEY key) override;
 
 	void on_mouse_moved(double, double) override;
+
+	void on_window_resize(int, int) override;
 
 };
 

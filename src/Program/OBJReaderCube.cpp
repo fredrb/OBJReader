@@ -75,6 +75,14 @@ void OBJReaderCube::toggle_scale() {
 	this->obj_model = model;
 }
 
+void OBJReaderCube::on_window_resize(int width, int height) {
+	this->context->updateWindowSize(width, height);
+}
+
+void OBJReaderCube::rotate() {
+	this->obj_model = glm::rotate(this->obj_model, glm::radians(50.0f), glm::vec3(0.0f, 0.3f, 0.0f));
+}
+
 void OBJReaderCube::on_key_pressed(const KEY key) {
 #if LOG_WARN
 	std::cout << "Key pressed: " << key << std::endl;
@@ -98,6 +106,9 @@ void OBJReaderCube::on_key_pressed(const KEY key) {
 		break;
 		case KEY::SCALE:
 			this->toggle_scale();
+		break;
+		case KEY::ROTATE:
+			this->rotate();
 		break;
 		default:
 		break;

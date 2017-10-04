@@ -32,6 +32,8 @@ public:
 	void render() const;
 
 	void attachObject(const RenderObject* obj);
+
+	void updateWindowSize(int width, int height);
 };
 
 #endif

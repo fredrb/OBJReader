@@ -34,3 +34,9 @@ void Context::attachObject(const RenderObject* obj) {
 	this->scene_graph.push_back(obj);
 }
 
+
+void Context::updateWindowSize(int width, int height) {
+	this->width = width;
+	this->height = height;
+	glViewport(0, 0, this->width, this->height);
+}

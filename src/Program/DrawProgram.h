@@ -9,7 +9,8 @@ enum KEY {
 	LEFT,
 	RIGHT,
 	QUIT,
-	SCALE
+	SCALE,
+	ROTATE
 };
 
 class DrawProgram {
@@ -22,6 +23,9 @@ public:
 	virtual void on_key_pressed (const KEY) = 0;
 
 	virtual void on_mouse_moved (double xpos, double ypos) = 0;
+
+	virtual void on_window_resize(int width, int height) = 0;
+ 
 };
 
 #endif
