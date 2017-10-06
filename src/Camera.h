@@ -16,15 +16,16 @@ private:
 	float lastX = 800.0f / 2;
 	float lastY = 600.0f / 2;
 
-	glm::vec3 cameraPos;
 	glm::vec3 cameraFront;
 	glm::vec3 cameraUp;
 public:
 	float fov = 45.0f;
 
-	Camera() : cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)),
-						 cameraFront(glm::vec3(0.0f, 0.0f, -1.0f)),
-						 cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)) {};
+	glm::vec3 cameraPos;
+
+	Camera() : cameraFront(glm::vec3(0.0f, 0.0f, -1.0f)),
+						 cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)),
+						 cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)) {};
 
 	void apply_view(float timestamp, glm::mat4 &view) const;
 

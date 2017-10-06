@@ -13,6 +13,11 @@ void Window::process_mouse_callback(GLFWwindow* window, double xpos, double ypos
 	GLOBAL_PROGRAM->on_mouse_moved(xpos, ypos);
 }
 
+void Window::on_window_resize(GLFWwindow* w, int width, int height) {
+	std::cout << "Window resize" << std::endl;
+	GLOBAL_PROGRAM->on_window_resize(width, height);
+}
+
 void Window::process_input() {
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		GLOBAL_PROGRAM->on_key_pressed(KEY::UP);
@@ -57,6 +62,7 @@ void Window::run_program() {
 	Context context(this->width, this->height);
 	GLOBAL_PROGRAM->init_draw_program(&context);
 	glfwSetCursorPosCallback(this->window, this->process_mouse_callback);
+	glfwSetFramebufferSizeCallback(this->window, this->on_window_resize);
 
 	while (!glfwWindowShouldClose(window) && !context.quit) {
 		float t = glfwGetTime() * 1000;

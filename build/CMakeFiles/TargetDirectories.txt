@@ -1,0 +1,13 @@
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/install/strip.dir
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/install.dir
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/install/local.dir
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/list_install_components.dir
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/edit_cache.dir
+/home/fredrb/code/OpenGL/OBJReader/build/CMakeFiles/rebuild_cache.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/edit_cache.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/install/strip.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/run.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/rebuild_cache.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/list_install_components.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/install/local.dir
+/home/fredrb/code/OpenGL/OBJReader/build/bin/CMakeFiles/install.dir

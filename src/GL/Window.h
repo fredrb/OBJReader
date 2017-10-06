@@ -12,6 +12,8 @@ class Window {
 private:
 	static void process_mouse_callback(GLFWwindow* w, double xpos, double ypos);
 
+	static void on_window_resize(GLFWwindow* w, int width, int height);
+
 	unsigned int width, height;
 	GLFWwindow* window;
 	float last_refresh;

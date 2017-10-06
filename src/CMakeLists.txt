@@ -3,8 +3,8 @@ cmake_minimum_required( VERSION 2.8 )
 file( GLOB SOURCES *.cpp )
 
 set(D_LOG_TRACE 0)
-set(D_LOG_WARN 1)
-set(D_LOG_INFO 1)
+set(D_LOG_WARN 0)
+set(D_LOG_INFO 0)
 set(D_LOG_ERROR 1)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
