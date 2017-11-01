@@ -1,23 +1,17 @@
-#ifndef OBJ_READER_CUBE_PROGRAM_H
-#define OBJ_READER_CUBE_PROGRAM_H
+#ifndef SCENE_H
+#define SCENE_H
 
 #include "DrawProgram.h"
-#include "../Camera.h"
 #include "../GL/Object/SceneObject.h"
+#include "../Camera.h"
 
-class OBJReaderCube : public DrawProgram {
+class Scene : public DrawProgram {
 private:
 	unsigned int VAO;
 	std::vector<float> vertices;
 	std::vector<unsigned int> indexes;
-	Context* context;
-	glm::mat4 view, obj_model, light_model, projection;
-	Camera camera;
 
 	glm::vec3 obj_position = glm::vec3(0.5f, 0.5f, -3.0f);
-
-	SceneObject *obj;
-	SceneObject *light;
 
 	void toggle_scale();
 
@@ -25,10 +19,22 @@ private:
 
 	bool big_scale = false;
 
+
 protected:
+	Camera camera;
+
+	SceneObject *obj;
+	SceneObject *light;
+	Context* context;
+
+	glm::mat4 view, obj_model, light_model, projection;
+
+	std::vector<SceneObject*> objects;
+
+	void append_to_scene(SceneObject* object);
 
 public:
-	void init_draw_program (Context* c) override;
+	// virtual void init_draw_program (Context* c) override = 0;
 
 	void on_frame (const float timestamp) override;
 
@@ -37,6 +43,7 @@ public:
 	void on_mouse_moved(double, double) override;
 
 	void on_window_resize(int, int) override;
+
 
 };
 

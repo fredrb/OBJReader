@@ -5,6 +5,7 @@
 #include "Program/StaticTriangleIndexes.h"
 #include "Program/StaticCube.h"
 #include "Program/OBJReaderCube.h"
+#include "Program/MultipleObjectScene.h"
 
 int main() {
 
@@ -12,7 +13,8 @@ int main() {
 
 	// DrawProgram *p = new StaticCube();
 	// DrawProgram *p = new StaticTriangleIndexes();
-	DrawProgram *p = new OBJReaderCube();
+	// DrawProgram *p = new OBJReaderCube();
+	DrawProgram *p = new MultipleObjectScene();
 
 	window.attach_program(p);
 	window.run_program();
