@@ -1,0 +1,9 @@
+start bunny
+model bunny_vn.obj
+pos 0.5 0.5 -3.0
+end
+
+start cow
+model cow/uvmappedcow.obj
+pos 0.8 0.1 -2.5
+end

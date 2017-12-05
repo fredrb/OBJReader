@@ -81,4 +81,10 @@ void SceneObject::setUniformMatrix4(const char* name, glm::mat4 m) const {
 void SceneObject::setUniformVec3(const char* name, glm::vec3 v) const {
 	this->shader_program->use_program();
 	shader_program->setUniformVec3(name, v);
+}
+
+void SceneObject::refresh(glm::mat4 view, glm::mat4 projection) const {
+    this->setModelMatrix4(this->modelMatrix);
+    this->setViewMatrix4(view);
+    this->setProjectionMatrix4(projection);
 };

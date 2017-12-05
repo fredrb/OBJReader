@@ -14,6 +14,8 @@ private:
 	std::vector<unsigned int> indexes;
 	ShaderProgram* shader_program;
 public:
+	glm::mat4 modelMatrix;
+
 	SceneObject(std::string from_path);
 
 	void prepare_data() override;
@@ -31,6 +33,8 @@ public:
 	void setUniformMatrix4(const char* name, glm::mat4 m) const;
 
 	void setUniformVec3(const char* name, glm::vec3 v) const;
+
+	void refresh(glm::mat4 view, glm::mat4 projection) const;
 
 };
 

@@ -9,14 +9,14 @@ void Scene::on_frame(const float timestamp) {
 	camera.apply_view(timestamp, _view);
 	view = _view;
 
-	this->obj->setViewMatrix4(view);
-	this->obj->setProjectionMatrix4(projection);
-	this->obj->setModelMatrix4(obj_model);
+	for (auto obj : objects) {
+		obj->refresh(view, projection);
 
-	this->obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));
-	this->obj->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	this->obj->setUniformVec3("lightPos", glm::vec3(1.2f, 1.0f, 2.0f));
-	this->obj->setUniformVec3("viewPos", camera.cameraPos);
+		obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));
+		obj->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		obj->setUniformVec3("lightPos", glm::vec3(1.2f, 1.0f, 2.0f));
+		obj->setUniformVec3("viewPos", camera.cameraPos);
+	}
 
 	this->context->render();
 };
@@ -79,4 +79,9 @@ void Scene::on_key_pressed(const KEY key) {
 		default:
 		break;
 	}
+}
+
+void Scene::append_to_scene(SceneObject *object) {
+    this->context->attachObject(object);
+	this->objects.push_back(object);
 };
