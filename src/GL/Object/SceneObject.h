@@ -5,6 +5,10 @@
 #include "../../File/OBJReader.h"
 #include <GL/glew.h>
 
+typedef struct {
+    float x, y, z;
+} scene_target_t;
+
 class SceneObject : public RenderObject{
 
 private:
@@ -13,10 +17,22 @@ private:
 	std::vector<float> vertices;
 	std::vector<unsigned int> indexes;
 	ShaderProgram* shader_program;
+    bool hasTarget;
+
+    scene_target_t* target;
+    scene_target_t* currentTarget;
+    scene_target_t* initialPosition;
+
+    glm::vec3 position;
+
+    void flipTarget();
+protected:
+    glm::mat4 modelMatrix;
 public:
-	glm::mat4 modelMatrix;
 
 	SceneObject(std::string from_path);
+
+    void setTarget(float x, float y, float z);
 
 	void prepare_data() override;
 
@@ -35,6 +51,12 @@ public:
 	void setUniformVec3(const char* name, glm::vec3 v) const;
 
 	void refresh(glm::mat4 view, glm::mat4 projection) const;
+
+    void setInitialPosition(glm::vec3 position);
+
+    void createModelMatrix();
+
+    void updatePosition();
 
 };
 

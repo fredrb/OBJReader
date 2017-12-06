@@ -83,8 +83,82 @@ void SceneObject::setUniformVec3(const char* name, glm::vec3 v) const {
 	shader_program->setUniformVec3(name, v);
 }
 
+void SceneObject::updatePosition() {
+    if (this->hasTarget) {
+        float new_x = this->position.x, new_y = this->position.y, new_z = this->position.z;
+        bool x_reached = false, y_reached = false, z_reached = false;
+
+        if ((this->currentTarget->x - this->position.x) < 0.05 && (this->currentTarget->x - this->position.x) > -0.05) {
+            x_reached = true;
+        } else {
+            if (this->currentTarget->x > this->position.x) {
+                new_x = static_cast<float>(this->position.x + 0.01);
+            } else {
+                new_x = static_cast<float>(this->position.x - 0.01);
+            }
+        }
+
+        if ((this->currentTarget->y - this->position.y) < 0.05 && (this->currentTarget->y - this->position.y) > -0.05) {
+            y_reached = true;
+        } else {
+            if (this->currentTarget->y > this->position.y) {
+                new_y = static_cast<float>(this->position.y + 0.01);
+            } else {
+                new_y = static_cast<float>(this->position.y - 0.01);
+            }
+        }
+
+        if ((this->currentTarget->z - this->position.z) < 0.05 && (this->currentTarget->z - this->position.z) > -0.05) {
+            z_reached = true;
+        } else {
+            if (this->currentTarget->z > this->position.z) {
+                new_z = static_cast<float>(this->position.z + 0.01);
+            } else {
+                new_z = static_cast<float>(this->position.z - 0.01);
+            }
+        }
+
+        if (x_reached && y_reached && z_reached)
+            this->flipTarget();
+
+        this->position = glm::vec3(new_x, new_y, new_z);
+        this->createModelMatrix();
+    }
+}
+
 void SceneObject::refresh(glm::mat4 view, glm::mat4 projection) const {
     this->setModelMatrix4(this->modelMatrix);
     this->setViewMatrix4(view);
     this->setProjectionMatrix4(projection);
+}
+
+void SceneObject::setTarget(float x, float y, float z) {
+	this->hasTarget = true;
+    auto target = new scene_target_t();
+    target->x = x;
+    target->y = y;
+    target->z = z;
+	this->target = target;
+    this->currentTarget = target;
+}
+
+void SceneObject::createModelMatrix() {
+    glm::mat4 model;
+    this->modelMatrix = glm::translate(model, this->position);
+}
+
+void SceneObject::setInitialPosition(glm::vec3 position) {
+    auto target = new scene_target_t();
+    target->x = position.x;
+    target->y = position.y;
+    target->z = position.z;
+    this->initialPosition = target;
+    this->position = position;
+}
+
+void SceneObject::flipTarget() {
+    this->currentTarget = (this->currentTarget == this->target) ?
+                          this->initialPosition :
+                          this->target;
+    std::cout << "UPDATING TARGET!" << std::endl;
 };

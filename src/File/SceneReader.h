@@ -6,9 +6,14 @@
 #include <vector>
 
 typedef struct {
+    float x, y, z;
+} object_target_t;
+
+typedef struct {
     std::string id;
     std::string model_path;
     float x, y, z;
+    object_target_t* target = NULL;
 } scene_object_t;
 
 class SceneReader {

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "../GL/Object/SceneObject.h"
 
 void Scene::on_frame(const float timestamp) {
 #if LOG_TRACE
@@ -10,6 +11,7 @@ void Scene::on_frame(const float timestamp) {
 	view = _view;
 
 	for (auto obj : objects) {
+        obj->updatePosition();
 		obj->refresh(view, projection);
 
 		obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));

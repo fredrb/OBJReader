@@ -13,6 +13,8 @@ void FileBasedScene::init_draw_program(Context *c) {
     for (auto object : objects) {
         auto sceneObject = new SceneObject("../assets/model/" + object.model_path);
         this->initialize_object(sceneObject, glm::vec3(object.x, object.y, object.z));
+        if (object.target != NULL)
+            sceneObject->setTarget(object.target->x, object.target->y, object.target->z);
         this->append_to_scene(sceneObject);
     }
 
@@ -38,8 +40,10 @@ void FileBasedScene::initialize_object(SceneObject *obj, glm::vec3 position) {
     view		= glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     projection	= glm::perspective(glm::radians(this->camera.fov), (float)this->context->width / (float)this->context->height, 0.1f, 100.0f);
 
-    glm::mat4 model_matrix;
-    obj->modelMatrix = glm::translate(model_matrix, position);
+    //glm::mat4 model_matrix;
+    //obj->modelMatrix = glm::translate(model_matrix, position);
+    obj->setInitialPosition(position);
+    obj->createModelMatrix();
     obj->refresh(view, projection);
 
     obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));

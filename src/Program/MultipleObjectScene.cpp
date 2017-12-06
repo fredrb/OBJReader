@@ -35,7 +35,7 @@ void MultipleObjectScene::initialize_object(SceneObject *obj, glm::mat4 model) {
     view		= glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     projection	= glm::perspective(glm::radians(this->camera.fov), (float)this->context->width / (float)this->context->height, 0.1f, 100.0f);
 
-    obj->modelMatrix = model;
+    //obj->modelMatrix = model;
     obj->refresh(view, projection);
 
     obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));
