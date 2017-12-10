@@ -28,16 +28,22 @@ void SceneObject::prepare_data() {
 		this->vertices.push_back(raw_data.normals.at(d.normal_index - 1).x);
 		this->vertices.push_back(raw_data.normals.at(d.normal_index - 1).y);
 		this->vertices.push_back(raw_data.normals.at(d.normal_index - 1).z);
+
+		this->vertices.push_back(raw_data.texture.at(d.texture_index -1).x);
+		this->vertices.push_back(raw_data.texture.at(d.texture_index -1).y);
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 #if LOG_WARN
 	std::cout << "FINISHED BINDING VBO" << std::endl;

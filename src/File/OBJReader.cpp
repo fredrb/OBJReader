@@ -6,6 +6,17 @@ void OBJReader::process_comment(const std::string line, t_obj_data &data) {
 
 }
 
+void OBJReader::process_texture(const std::string line, t_obj_data &data) {
+	std::stringstream stream(line);
+	std::string prefix;
+	std::getline(stream, prefix, ' ');
+
+	t_texture t;
+	stream >> t.x >> t.y;
+
+	data.texture.push_back(t);
+}
+
 void OBJReader::process_natural(const std::string line, t_obj_data &data) {
 	std::stringstream stream(line);
 	std::string prefix;
@@ -46,9 +57,10 @@ void OBJReader::process_face(const std::string line, t_obj_data &data) {
 		std::getline(ss, num, '/');
 		f.point_index = stoi(num);
 		std::getline(ss, num, '/');
+		f.texture_index = stoi(num);
 		std::getline(ss, num);
 		f.normal_index = stoi(num);
-		std::cout << "Point: " << f.point_index << " Normal: " << f.normal_index << std::endl;
+		std::cout << "Point: " << f.point_index << "Texture: " << f.texture_index << " Normal: " << f.normal_index << std::endl;
 		data.faces.push_back(f);
 	}
 }
@@ -71,6 +83,8 @@ t_obj_data OBJReader::get_obj_data() {
 			this->process_comment(line, obj);
 		} else if (line.at(0) == 'v' && line.at(1) == 'n' ) {
 			this->process_natural(line,obj);
+		} else if (line.at(0) == 'v' && line.at(1) == 't' ) {
+			this->process_texture(line, obj);
 		} else if (line.at(0) == 'v') {
 			this->process_vertex(line, obj);
 		} else if (line.at(0) == 'f') {
