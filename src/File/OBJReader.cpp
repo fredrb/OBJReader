@@ -65,6 +65,12 @@ void OBJReader::process_face(const std::string line, t_obj_data &data) {
 	}
 }
 
+void OBJReader::process_mtl_file(std::string line, t_obj_data &data) {
+    data.has_texture = true;
+	MTLReader* reader = new MTLReader("../assets/model/" + line.substr(7, line.size() - 8));
+	data.mtl = reader->get_mtl_data();
+}
+
 t_obj_data OBJReader::get_obj_data() {
 
 	std::ifstream file(path);
@@ -75,6 +81,8 @@ t_obj_data OBJReader::get_obj_data() {
 
 	std::string line;
 	t_obj_data obj;
+    obj.has_texture = false;
+
 	while (std::getline(file, line)) {
 		if (line.empty())
 			continue;
@@ -89,6 +97,8 @@ t_obj_data OBJReader::get_obj_data() {
 			this->process_vertex(line, obj);
 		} else if (line.at(0) == 'f') {
 			this->process_face(line, obj);
+		} else if (line.substr(0,6) == "mtllib") {
+			this->process_mtl_file(line, obj);
 		}
 	}
 
@@ -96,3 +106,5 @@ t_obj_data OBJReader::get_obj_data() {
 
 	return obj;
 }
+
+

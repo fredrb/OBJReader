@@ -36,6 +36,8 @@ public:
 	void setUniformMat4(const char* name, const glm::mat4 &mat) const;
 
 	void setUniformVec3(const char* name, const glm::vec3 &vec) const;
+
+    void setTexture(const char *name, int id) const;
 };
 
 #endif

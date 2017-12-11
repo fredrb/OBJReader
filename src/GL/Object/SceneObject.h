@@ -26,6 +26,8 @@ private:
     glm::vec3 position;
 
     void flipTarget();
+
+	unsigned int texture;
 protected:
     glm::mat4 modelMatrix;
 public:

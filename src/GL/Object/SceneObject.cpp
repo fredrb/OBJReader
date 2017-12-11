@@ -1,4 +1,7 @@
 #include "SceneObject.h"
+#include "../../File/OBJReader.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 SceneObject::SceneObject(std::string path) {
 	OBJReader reader(path);
@@ -33,6 +36,28 @@ void SceneObject::prepare_data() {
 		this->vertices.push_back(raw_data.texture.at(d.texture_index -1).y);
 	}
 
+    if (this->raw_data.has_texture) {
+        glGenTextures(1, &this->texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        int width, height, nrChannels;
+
+        unsigned char *data = stbi_load(("../assets/model/" + this->raw_data.mtl.map_kd).c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
+    }
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
 
@@ -42,7 +67,7 @@ void SceneObject::prepare_data() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 #if LOG_WARN
@@ -52,9 +77,18 @@ void SceneObject::prepare_data() {
 	glBindVertexArray(0);
 
 	this->shader_program->link_program();
+
+    if (this->raw_data.has_texture)
+        this->shader_program->setTexture("ourTexture", 0);
 }
 
 void SceneObject::draw() const {
+    if (this->raw_data.has_texture) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, this->texture);
+        this->shader_program->setTexture("ourTexture", 0);
+    }
+
 	glBindVertexArray(VAO);
 	this->shader_program->use_program();
 	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size() / 6);

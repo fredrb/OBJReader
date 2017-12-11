@@ -52,7 +52,7 @@ void Window::run_program() {
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (GLOBAL_PROGRAM == NULL) {
 		std::cout << "Failed to initialize window without a valid program" << std::endl;

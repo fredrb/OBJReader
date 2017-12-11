@@ -60,6 +60,10 @@ void ShaderProgram::attach_error_callback(t_error_callback fn) {
 	this->error_callback = fn;
 }
 
+void ShaderProgram::setTexture(const char* name, int id) const {
+	glUniform1i(glGetUniformLocation(this->shader_id, name), id);
+}
+
 void ShaderProgram::setUniformMat4(const char* name, const glm::mat4 &mat) const {
 #if LOG_TRACE
 	std::cout << "SETTING UNIFORM MATRIX 4 WITH ID " << name << std::endl;

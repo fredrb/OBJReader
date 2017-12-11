@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "MTLReader.h"
 
 typedef struct {
 	float x, y, z;
@@ -27,6 +28,8 @@ typedef struct {
 	std::vector<t_vector_normal> normals;
 	std::vector<t_face> faces;
 	std::vector<t_texture> texture;
+	t_mtl_data mtl;
+	bool has_texture;
 } t_obj_data;
 
 class OBJReader {
@@ -44,6 +47,7 @@ private:
 
 	void process_texture(const std::string line, t_obj_data &data);
 
+	void process_mtl_file(std::string line, t_obj_data &data);
 public:
 	OBJReader(std::string path) : path(path) {};
 

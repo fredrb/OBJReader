@@ -1,0 +1,4 @@
+start cow
+model cow/uvmappedcow.obj
+pos 0.8 0.0 -2.5
+end
