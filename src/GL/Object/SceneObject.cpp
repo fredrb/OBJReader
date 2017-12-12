@@ -56,9 +56,9 @@ void SceneObject::prepare_data() {
 	std::cout << "FINISHED BINDING VBO" << std::endl;
 #endif
 
-    this->texture = loadTexture(("../assets/model/" + this->raw_data.mtl.map_kd).c_str());
-    // this->texture = loadTexture("../assets/model/container2.png");
-    this->texture_specular = loadTexture("../assets/model/container2_specular.png");
+    this->diffuseMap = loadTexture(("../assets/model/" + this->raw_data.mtl.map_kd).c_str());
+    //this->texture = loadTexture("../assets/model/container2.png");
+    this->specularMap = loadTexture("../assets/model/container2_specular.png");
     this->shader_program->use_program();
     this->shader_program->setTexture("material.diffuse", 0);
     this->shader_program->setTexture("material.specular", 1);
@@ -115,10 +115,10 @@ void SceneObject::draw() const {
 	this->setUniformVec3("light.specular", get_vec_from_k(this->raw_data.mtl.ks));
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->texture);
+    glBindTexture(GL_TEXTURE_2D, this->diffuseMap);
 
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, this->texture_specular);
+    glBindTexture(GL_TEXTURE_2D, this->specularMap);
 
 	glBindVertexArray(VAO);
 	this->shader_program->use_program();

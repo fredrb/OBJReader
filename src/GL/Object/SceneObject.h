@@ -27,8 +27,8 @@ private:
 
     void flipTarget();
 
-	unsigned int texture;
-	unsigned int texture_specular;
+	unsigned int diffuseMap;
+	unsigned int specularMap;
 
 	unsigned int loadTexture(char const * path);
 
