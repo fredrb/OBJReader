@@ -2,11 +2,35 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <SOIL/SOIL.h>
 
 SceneObject::SceneObject(std::string path) {
 	OBJReader reader(path);
 	raw_data = reader.get_obj_data();
 	this->shader_program = new ShaderProgram();
+}
+
+static unsigned int _loadTexture(char const * path, const unsigned int textureConstant) {
+    int width, height;
+
+    unsigned int texture;
+    glGenTextures(1, &texture);
+
+    glActiveTexture(textureConstant);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    unsigned char* image =
+            SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, image);
+    SOIL_free_image_data(image);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return texture;
 }
 
 void SceneObject::prepare_data() {
@@ -38,8 +62,6 @@ void SceneObject::prepare_data() {
 		this->vertices.push_back(raw_data.texture.at(d.texture_index -1).y);
 	}
 
-
-
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
 
@@ -56,9 +78,10 @@ void SceneObject::prepare_data() {
 	std::cout << "FINISHED BINDING VBO" << std::endl;
 #endif
 
-    this->diffuseMap = loadTexture(("../assets/model/" + this->raw_data.mtl.map_kd).c_str());
-    //this->texture = loadTexture("../assets/model/container2.png");
-    this->specularMap = loadTexture("../assets/model/container2_specular.png");
+    this->diffuseMap = _loadTexture(("../assets/model/" + this->raw_data.mtl.map_kd).c_str(), GL_TEXTURE0);
+    //this->diffuseMap = loadTexture("../assets/model/container2.png");
+    this->specularMap = _loadTexture("../assets/model/container2_specular.png", GL_TEXTURE1);
+
     this->shader_program->use_program();
     this->shader_program->setTexture("material.diffuse", 0);
     this->shader_program->setTexture("material.specular", 1);
@@ -66,14 +89,16 @@ void SceneObject::prepare_data() {
     glBindVertexArray(0);
 }
 
+
+
+/*
 unsigned int SceneObject::loadTexture(char const * path) {
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
     unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
+    if (data) {
         GLenum format;
         if (nrComponents == 1)
             format = GL_RED;
@@ -93,15 +118,13 @@ unsigned int SceneObject::loadTexture(char const * path) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_image_free(data);
-    }
-    else
-    {
+    } else {
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
     }
 
     return textureID;
-}
+}*/
 
 static glm::vec3 get_vec_from_k(t_mtl_vec3 data) {
     return glm::vec3(data.x, data.y, data.z);
@@ -114,14 +137,16 @@ void SceneObject::draw() const {
 	this->setUniformVec3("light.diffuse", get_vec_from_k(this->raw_data.mtl.kd));
 	this->setUniformVec3("light.specular", get_vec_from_k(this->raw_data.mtl.ks));
 
+    glBindVertexArray(VAO);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->diffuseMap);
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, this->specularMap);
 
-	glBindVertexArray(VAO);
 	this->shader_program->use_program();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size() / 8);
 }
 

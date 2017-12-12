@@ -66,7 +66,8 @@ void Window::run_program() {
 
 	while (!glfwWindowShouldClose(window) && !context.quit) {
 		float t = glfwGetTime() * 1000;
-		if (t - this->last_refresh > REFRESH_RATE) {
+
+		if (t - this->last_refresh > REFRESH_RATE || t - this->last_refresh < 0) {
 #if LOG_TRACE
 			std::cout << "CURRENT TIME: "<< t << " - Last refresh at: " << this->last_refresh << " - Refresh rate: " << REFRESH_RATE << std::endl;
 #endif

@@ -21,7 +21,7 @@ void Scene::on_frame(const float timestamp) {
 //		obj->setUniformVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
 //		obj->setUniformVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
-		obj->setFloat("material.shininess", 64.0f);
+		obj->setFloat("material.shininess", 90.0f);
 	}
 
 	this->context->render();

@@ -4,8 +4,8 @@ pos 0.8 0.0 -2.5
 target 0.8 1.0 -2.5
 end
 
-start bola
-model bola.obj
+start cow
+model uvmappedcow.obj
 pos 3.0 -0.5 -1.5
 target 2.9 -0.4 -3.5
 end

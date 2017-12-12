@@ -43,5 +43,4 @@ void FileBasedScene::initialize_object(SceneObject *obj, glm::vec3 position) {
     obj->setInitialPosition(position);
     obj->createModelMatrix();
     obj->refresh(view, projection);
-
 }

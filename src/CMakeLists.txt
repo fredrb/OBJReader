@@ -31,5 +31,5 @@ else(GLFW_FOUND)
 	return()
 endif(GLEW_FOUND)
 
-target_link_libraries( ${MAIN_EXE_NAME} glfw GL)
+target_link_libraries( ${MAIN_EXE_NAME} glfw GL SOIL)
 install( TARGETS ${MAIN_EXE_NAME} RUNTIME DESTINATION bin )
