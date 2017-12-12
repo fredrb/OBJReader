@@ -28,6 +28,10 @@ private:
     void flipTarget();
 
 	unsigned int texture;
+	unsigned int texture_specular;
+
+	unsigned int loadTexture(char const * path);
+
 protected:
     glm::mat4 modelMatrix;
 public:
@@ -59,6 +63,9 @@ public:
     void createModelMatrix();
 
     void updatePosition();
+
+	void setFloat(const char* name, float v) const;
+
 
 };
 

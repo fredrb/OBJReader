@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(MAIN_SOURCES main.cpp File/FileReader.cpp File/OBJReader.cpp File/SceneReader.cpp File/MTLReader.cpp third_party/stb_image.h
 									GL/Context.cpp GL/ShaderProgram.cpp GL/Window.cpp GL/Object/SceneObject.cpp
-									Program/OBJReaderCube.cpp Program/Scene.cpp Program/MultipleObjectScene.cpp Program/FileBasedScene.cpp
+        Program/Scene.cpp Program/FileBasedScene.cpp
 									Camera.cpp)
 
 set(MAIN_EXE_NAME run)

@@ -38,6 +38,8 @@ public:
 	void setUniformVec3(const char* name, const glm::vec3 &vec) const;
 
     void setTexture(const char *name, int id) const;
+
+    void setFloat(const char* name, float value) const;
 };
 
 #endif

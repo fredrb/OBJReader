@@ -1,5 +1,5 @@
 #include "SceneObject.h"
-#include "../../File/OBJReader.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
@@ -10,7 +10,9 @@ SceneObject::SceneObject(std::string path) {
 }
 
 void SceneObject::prepare_data() {
-	glGenVertexArrays(1, &this->VAO);
+    this->shader_program->link_program();
+
+    glGenVertexArrays(1, &this->VAO);
 
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
@@ -36,27 +38,7 @@ void SceneObject::prepare_data() {
 		this->vertices.push_back(raw_data.texture.at(d.texture_index -1).y);
 	}
 
-    if (this->raw_data.has_texture) {
-        glGenTextures(1, &this->texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        int width, height, nrChannels;
 
-        unsigned char *data = stbi_load(("../assets/model/" + this->raw_data.mtl.map_kd).c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-        }
-        else
-        {
-            std::cout << "Failed to load texture" << std::endl;
-        }
-        stbi_image_free(data);
-    }
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
@@ -67,31 +49,80 @@ void SceneObject::prepare_data() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 #if LOG_WARN
 	std::cout << "FINISHED BINDING VBO" << std::endl;
 #endif
 
-	glBindVertexArray(0);
+    this->texture = loadTexture(("../assets/model/" + this->raw_data.mtl.map_kd).c_str());
+    // this->texture = loadTexture("../assets/model/container2.png");
+    this->texture_specular = loadTexture("../assets/model/container2_specular.png");
+    this->shader_program->use_program();
+    this->shader_program->setTexture("material.diffuse", 0);
+    this->shader_program->setTexture("material.specular", 1);
 
-	this->shader_program->link_program();
+    glBindVertexArray(0);
+}
 
-    if (this->raw_data.has_texture)
-        this->shader_program->setTexture("ourTexture", 0);
+unsigned int SceneObject::loadTexture(char const * path) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
+    }
+
+    return textureID;
+}
+
+static glm::vec3 get_vec_from_k(t_mtl_vec3 data) {
+    return glm::vec3(data.x, data.y, data.z);
 }
 
 void SceneObject::draw() const {
-    if (this->raw_data.has_texture) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, this->texture);
-        this->shader_program->setTexture("ourTexture", 0);
-    }
+
+    this->shader_program->use_program();
+    this->setUniformVec3("light.ambient", get_vec_from_k(this->raw_data.mtl.ka));
+	this->setUniformVec3("light.diffuse", get_vec_from_k(this->raw_data.mtl.kd));
+	this->setUniformVec3("light.specular", get_vec_from_k(this->raw_data.mtl.ks));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->texture);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, this->texture_specular);
 
 	glBindVertexArray(VAO);
 	this->shader_program->use_program();
-	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size() / 6);
+	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size() / 8);
 }
 
 void SceneObject::attach_shader(std::string source, SHADER_TYPE type) const {
@@ -122,6 +153,11 @@ void SceneObject::setUniformVec3(const char* name, glm::vec3 v) const {
 	this->shader_program->use_program();
 	shader_program->setUniformVec3(name, v);
 }
+
+void SceneObject::setFloat(const char* name, float v) const {
+    this->shader_program->use_program();
+    shader_program->setFloat(name, v);
+};
 
 void SceneObject::updatePosition() {
     if (this->hasTarget) {
@@ -201,4 +237,6 @@ void SceneObject::flipTarget() {
                           this->initialPosition :
                           this->target;
     std::cout << "UPDATING TARGET!" << std::endl;
-};
+}
+
+

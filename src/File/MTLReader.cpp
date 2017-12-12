@@ -54,5 +54,13 @@ void MTLReader::process_vector(std::string line, t_mtl_data &data) {
 }
 
 void MTLReader::process_texture_file(std::string line, t_mtl_data &data) {
-    data.map_kd = line.substr(7,line.size() - 8);
+    std::stringstream stream(line);
+    std::string prefix;
+    std::getline(stream, prefix, ' ');
+
+    std::string part;
+
+    stream >> part; //map_Kd
+    stream >> part; //path
+    data.map_kd = part;
 }

@@ -60,14 +60,22 @@ void OBJReader::process_face(const std::string line, t_obj_data &data) {
 		f.texture_index = stoi(num);
 		std::getline(ss, num);
 		f.normal_index = stoi(num);
-		std::cout << "Point: " << f.point_index << "Texture: " << f.texture_index << " Normal: " << f.normal_index << std::endl;
+		std::cout << "Point: " << f.point_index << " Texture: " << f.texture_index << " Normal: " << f.normal_index << std::endl;
 		data.faces.push_back(f);
 	}
 }
 
 void OBJReader::process_mtl_file(std::string line, t_obj_data &data) {
+	std::stringstream stream(line);
+	std::string prefix;
+	std::getline(stream, prefix, ' ');
+
+	std::string part;
+	stream >> part; // mtllib
+	stream >> part; // name
+
     data.has_texture = true;
-	MTLReader* reader = new MTLReader("../assets/model/" + line.substr(7, line.size() - 8));
+	MTLReader* reader = new MTLReader("../assets/model/" + part);
 	data.mtl = reader->get_mtl_data();
 }
 

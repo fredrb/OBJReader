@@ -73,4 +73,8 @@ void ShaderProgram::setUniformMat4(const char* name, const glm::mat4 &mat) const
 
 void ShaderProgram::setUniformVec3(const char* name, const glm::vec3 &vec) const {
 	glUniform3f(glGetUniformLocation(this->shader_id, name), 1, GL_FALSE, vec[0]);
+}
+
+void ShaderProgram::setFloat(const char* name, float value) const {
+    glUniform1f(glGetUniformLocation(this->shader_id, name), value);
 };

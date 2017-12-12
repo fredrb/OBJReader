@@ -14,10 +14,14 @@ void Scene::on_frame(const float timestamp) {
         obj->updatePosition();
 		obj->refresh(view, projection);
 
-		obj->setUniformVec3("objectColor", glm::vec3(0.9f, 0.0f, 0.0f));
-		obj->setUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		obj->setUniformVec3("lightPos", glm::vec3(1.2f, 1.0f, 2.0f));
+		obj->setUniformVec3("light.position", glm::vec3(1.2f, 1.0f, 2.0f));
 		obj->setUniformVec3("viewPos", camera.cameraPos);
+
+//		obj->setUniformVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+//		obj->setUniformVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+//		obj->setUniformVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		obj->setFloat("material.shininess", 64.0f);
 	}
 
 	this->context->render();

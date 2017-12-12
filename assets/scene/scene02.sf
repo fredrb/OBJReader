@@ -1,4 +1,4 @@
-start cow
-model cow/uvmappedcow.obj
+start planet
+model bola.obj
 pos 0.8 0.0 -2.5
 end
