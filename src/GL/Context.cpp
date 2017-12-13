@@ -19,7 +19,7 @@ void Context::initialize_context() {
 };
 
 void Context::render() const {
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.01f, 0.01f, 0.02f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (auto it = this->scene_graph.begin(); it < this->scene_graph.end(); ++it) {

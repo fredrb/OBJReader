@@ -1,6 +1,7 @@
 #include "FileBasedScene.h"
 #include "../File/SceneReader.h"
 #include "../File/FileReader.h"
+#include "./Animations/CurveAnimation.h"
 
 void FileBasedScene::init_draw_program(Context *c) {
     SceneReader reader("../assets/scene/scene01.sf");
@@ -13,8 +14,7 @@ void FileBasedScene::init_draw_program(Context *c) {
     for (auto object : objects) {
         auto sceneObject = new SceneObject("../assets/model/" + object.model_path);
         this->initialize_object(sceneObject, glm::vec3(object.x, object.y, object.z));
-        if (object.target != NULL)
-            sceneObject->setTarget(object.target->x, object.target->y, object.target->z);
+        sceneObject->attach_animation(new CurveAnimation(object.radius, object.speed));
         this->append_to_scene(sceneObject);
     }
 

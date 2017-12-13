@@ -17,15 +17,12 @@ private:
 	std::vector<float> vertices;
 	std::vector<unsigned int> indexes;
 	ShaderProgram* shader_program;
-    bool hasTarget;
 
-    scene_target_t* target;
-    scene_target_t* currentTarget;
-    scene_target_t* initialPosition;
+    glm::vec3 initialPosition;
+
+    Animation *animation;
 
     glm::vec3 position;
-
-    void flipTarget();
 
 	unsigned int diffuseMap;
 	unsigned int specularMap;
@@ -37,8 +34,6 @@ protected:
 public:
 
 	SceneObject(std::string from_path);
-
-    void setTarget(float x, float y, float z);
 
 	void prepare_data() override;
 
@@ -62,11 +57,11 @@ public:
 
     void createModelMatrix();
 
-    void updatePosition();
+    void updatePosition(const float d);
 
 	void setFloat(const char* name, float v) const;
 
-
+    void attach_animation(Animation* animation) override;
 };
 
 #endif

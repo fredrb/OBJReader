@@ -11,7 +11,7 @@ void Scene::on_frame(const float timestamp) {
 	view = _view;
 
 	for (auto obj : objects) {
-        obj->updatePosition();
+        obj->updatePosition(timestamp);
 		obj->refresh(view, projection);
 
 		obj->setUniformVec3("light.position", glm::vec3(1.2f, 1.0f, 2.0f));
